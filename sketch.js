@@ -38,7 +38,7 @@ var HEIGHT = window.innerHeight;
 var DIM = Math.min(WIDTH, HEIGHT);
 var M = DIM / DEFAULT_SIZE;
 
-let ts = 15;
+let ts = 40;
 let avx = 0;
 let avxcol = 0;
 let index;
@@ -129,7 +129,7 @@ function draw() {
       translate(WIDTH - x,y)
       r+=noise(x/300,y/300)
       rotate(r)
-      rect(0,0,ranSize[c]/10*noise(x,y),ranSize[c]/10*noise(x,y)*4);
+      rect(0,0,ranSize[c]/5*noise(x,y),ranSize[c]/5*noise(x,y)*4);
       pop();
       
       // text(letter[c], x, y);
