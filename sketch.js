@@ -38,21 +38,26 @@ var HEIGHT = window.innerHeight;
 var DIM = Math.min(WIDTH, HEIGHT);
 var M = DIM / DEFAULT_SIZE;
 
-let ts = 20;
+let ts = 30;
 let avx = 0;
 let avxcol = 0;
 let index;
 let ranSize = [];
 
 function setup() {
-  createCanvas(WIDTH, HEIGHT);
   
+  createCanvas(WIDTH, HEIGHT)
   // pixelDensity(1);
   // image(myImage, 0, 0, width, height);
   
   myVid = createCapture(VIDEO);
   myVid.size(WIDTH, HEIGHT);
   myVid.hide(); // hide it
+  
+
+  vidW = myVid.width;//map(myVid.width, 0, 160, 0, WIDTH);
+  vidH = myVid.height;//map(myVid.height, 0, 90, 0, HEIGHT);
+  
 
   whichColor = 4;//int(random(0,10))
   
@@ -79,8 +84,8 @@ function setup() {
 function draw() {
   
   // let letter = [];
-  // rectMode(CENTER)
-
+  rectMode(CENTER)
+  // background(0)
   // rotate(PI/2)
 
   // translate(WIDTH/2, HEIGHT/2)
@@ -89,16 +94,20 @@ function draw() {
   
   // loadPixels()
   myVid.loadPixels();
+
+  // vidW = myVid.width;//map(myVid.width, 0, 160, 0, WIDTH);
+  // vidH = myVid.height;//map(myVid.height, 0, 90, 0, HEIGHT);
+  
   
   c = 0;
-  for(var y = 0; y < HEIGHT; y+=ts){
-    for(var x = WIDTH; x > 0; x-=ts){
-      var index = (x + y * WIDTH) * 4;
+  for(var y = 0; y <= vidH; y+=ts){
+    for(var x = 0; x <= vidW; x+=ts){
+      var index = (x + y * vidW) * 4;
       // letter[c] = round(map(myVid.pixels[index], 0, 255, 0, 9));
-      alpha[c] = myVid.pixels[index];
+      // alpha[c] = myVid.pixels[index];
       
-      if(random(0,1)>0.9) ranSize[c] = random(50,100);
-      else ranSize[c] = random(50,80);
+      if(random(0,1)>0.9) ranSize[c] = random(50,150);
+      else ranSize[c] = random(10,80);
       // fill(255);
       // textSize(5);
       // text(letter, x, y);
@@ -111,13 +120,13 @@ function draw() {
   
   c = 0;
 
-  for(var y = 0; y < HEIGHT; y+=ts){
-    for(var x = WIDTH; x > 0; x-=ts){
-      index = (x + y * WIDTH) * 4;
+  for(var y = 0; y <= vidH; y+=ts){
+    for(var x = 0; x <= vidW; x+=ts){
+      var index = (x + y * vidW) * 4;
       // var letter = round(map(pixels[index], 0, 255, 0, 9));
       // fill(255, 255, 255, alpha[c]);
       // textSize(ts);
-      print(myVid.pixels[index])
+      // print(myVid.pixels[index])
       let r = map(myVid.pixels[index], 0, 255, -PI/2, PI/2);
       avx += map(myVid.pixels[index], 0, 255, 0, 1);
       avxcol = map(myVid.pixels[index], 0, 255, 0, 255);
@@ -125,11 +134,11 @@ function draw() {
       // fill(myVid.pixels[index])
       fill(clrA[(floor(avxcol))%clrA.length])
       // noStroke()
-      strokeWeight(0.3)
-      translate(WIDTH - x,y)
+      // strokeWeight(0.3)
+      translate(vidW - x,y)
       // r+=noise(x/300,y/300)
-      rotate(r + frameCount/60)
-      rect(0,0,ranSize[c]/5*noise(x,y),ranSize[c] + ranSize[c]/5*noise(x,y)*4);
+      rotate(r + frameCount/30)
+      rect(0,0,ranSize[c]/4 + ranSize[c]/10*noise(x,y),ranSize[c] + ranSize[c]/10*noise(x,y)*2);
       pop();
       
       // text(letter[c], x, y);
