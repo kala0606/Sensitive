@@ -20,7 +20,7 @@ let clr7         = [ [245, 237, 220],[207, 210, 207],[162, 181, 187],[235, 29, 5
 let clr8         = [ [245, 245, 245],[240, 84, 84],[48, 71, 94],[18, 18, 18] ]; 
 let clr9         = [ [255, 255, 255], [0, 0, 0] ]; 
 
-let clr1Num      = 2000;
+let clr1Num      = 255;
 let clr1Cnt      = -1;
 let clr1Blk;
 let clrA         = [];
@@ -38,7 +38,7 @@ var HEIGHT = window.innerHeight;
 var DIM = Math.min(WIDTH, HEIGHT);
 var M = DIM / DEFAULT_SIZE;
 
-let ts = 40;
+let ts = 20;
 let avx = 0;
 let avxcol = 0;
 let index;
@@ -97,8 +97,8 @@ function draw() {
       // letter[c] = round(map(myVid.pixels[index], 0, 255, 0, 9));
       alpha[c] = myVid.pixels[index];
       
-      if(random(0,1)>0.9) ranSize[c] = random(100,500);
-      else ranSize[c] = random(50,300);
+      if(random(0,1)>0.9) ranSize[c] = random(50,100);
+      else ranSize[c] = random(50,80);
       // fill(255);
       // textSize(5);
       // text(letter, x, y);
@@ -111,8 +111,8 @@ function draw() {
   
   c = 0;
 
-  for(var y = 0; y <= HEIGHT; y+=ts){
-    for(var x = WIDTH; x >= 0; x-=ts){
+  for(var y = 0; y < HEIGHT; y+=ts){
+    for(var x = WIDTH; x > 0; x-=ts){
       index = (x + y * WIDTH) * 4;
       // var letter = round(map(pixels[index], 0, 255, 0, 9));
       // fill(255, 255, 255, alpha[c]);
@@ -120,16 +120,16 @@ function draw() {
       print(myVid.pixels[index])
       let r = map(myVid.pixels[index], 0, 255, -PI/2, PI/2);
       avx += map(myVid.pixels[index], 0, 255, 0, 1);
-      avxcol = map(myVid.pixels[index], 0, 255, 0, 2000);
+      avxcol = map(myVid.pixels[index], 0, 255, 0, 255);
       push();
       // fill(myVid.pixels[index])
-      fill(clrA[(floor(avxcol+frameCount*2))%clrA.length])
+      fill(clrA[(floor(avxcol))%clrA.length])
       // noStroke()
       strokeWeight(0.3)
       translate(WIDTH - x,y)
-      r+=noise(x/300,y/300)
-      rotate(r)
-      rect(0,0,ranSize[c]/5*noise(x,y),ranSize[c]/5*noise(x,y)*4);
+      // r+=noise(x/300,y/300)
+      rotate(r + frameCount/60)
+      rect(0,0,ranSize[c]/5*noise(x,y),ranSize[c] + ranSize[c]/5*noise(x,y)*4);
       pop();
       
       // text(letter[c], x, y);
@@ -141,6 +141,7 @@ function draw() {
   // print(Capture.list()); 
  
   // noLoop();
+  // drawCust();
 }
 
 function setColorTables() {
